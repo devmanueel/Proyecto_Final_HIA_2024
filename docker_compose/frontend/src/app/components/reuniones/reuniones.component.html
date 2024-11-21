@@ -1,0 +1,41 @@
+<div class="container-fluid p-5">
+    <h5 class="bg-rojo mb-0 px-5 py-3 rounded-top mt-5 text-white">Resgistro de Reuniones</h5>
+    <div class="px-5 py-4 bg-white rounded-bottom">
+        <table datatable class="table table-bordered align-middle text-center" [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+            <thead>
+                <tr class="align-middle">
+                    <th>Tipo de reunion</th>
+                    <th>Horario</th>
+                    <th>Prioridad</th>
+                    <th>Oficina</th>
+                    <th>Estado</th>
+                    <th>Deshabilitada</th>
+                    <th>Confirmada</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let r of reuniones" id="{{ r._id }}">
+                    <td>{{ r.tipoReunion.tipoReunion }}</td>
+                    <td>
+                        <p>{{ r.horaInicio | date: 'dd/MM/yyyy' }}</p>
+                        {{ r.horaInicio | date: 'HH:mm' }} - 
+                        {{ r.horaFinal | date: 'HH:mm' }}
+                    </td>
+                    <td>{{ r.prioridad.tipoPrioridad }}</td>
+                    <td>{{ r.oficina.nombre }}</td>
+                    <td>{{ r.estado.nombreEstado }}</td>
+                    <td>{{ r.estaDeshabilitada | yesNo }}</td>
+                    <td>{{ r.reunionConfirmada | yesNo }}</td>
+                    <td>
+                        <button class="btn btn-celeste d-block m-auto my-1" (click)="verReunion(r)">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+            </tfoot>
+        </table>
+    </div>
+</div>

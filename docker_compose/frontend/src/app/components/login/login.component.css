@@ -1,0 +1,47 @@
+.contenido{
+    background-color: #EBEFF3;
+}
+img{
+    height: 6.5rem;
+    width: 6.5rem;
+}
+
+.nombre{
+    font-weight: 600;
+    font-size: 1.8rem;
+    line-height: 44px;
+    margin-top: 30px;
+    color: #000000;
+    text-align: center;
+    margin-left: 25px;
+}
+.formulario{
+    margin-top: 20px;
+    background: #FFFFFF;
+    border-radius: 24px;
+}
+label{
+    font-weight: 600;
+    font-size: 20px;
+    color: #000000;
+}
+input{
+    border: 1px solid #100924;
+    border-radius: 10px;
+}
+.boton{
+    background: #E55767;
+    color: white;
+    border-radius: 12px;
+    margin-top: 20px;
+    font-size: 18px;
+    width: 50%;
+}
+.boton:hover{
+    background-color: rgba(185, 6, 51, 0.8);
+}
+
+p i {
+    font-size: 3rem;
+    margin-top: 2rem;
+}

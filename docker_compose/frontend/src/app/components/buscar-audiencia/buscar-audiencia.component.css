@@ -1,0 +1,18 @@
+thead {
+    background-color: #E55767;
+    color: #fff;
+}
+
+.bg-rojo {
+    background-color: #E55767;
+    color: #fff;
+}
+
+.btn-celeste {
+    background-color: #2a9ed2;
+    color: #fff;
+}
+
+.btn-celeste:hover {
+    background-color: rgba(42, 158, 210, 0.8);
+}

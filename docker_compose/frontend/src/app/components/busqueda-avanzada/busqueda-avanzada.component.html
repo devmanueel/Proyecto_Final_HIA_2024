@@ -1,0 +1,85 @@
+<!-- *********** TABLA 1 PARA MOSTRAR FILTRO POR LEGAJO O ROL -->
+<div class="row justify-content-center">
+  <div class="row">
+    <h2 class="col-md-4 offset-5">Busqueda avanzada</h2>
+  </div>
+  <div class="row justify-content-center gy-3">
+    <div class="col-md-2 form-floating">
+      <select [(ngModel)]="legajo" class="form-select" id="legajo" aria-label="Floating label select example"
+      (ngModelChange)="onChange1($event)">
+        <option selected>Legajo</option>
+        <option *ngFor="let e of empleados">
+          {{e.legajo}}
+        </option>
+      </select>
+      <label for="floatingSelect">Seleccione Legajo</label>
+    </div>
+    <div class="col-md-2 offset-1 mb-4">
+      <ng-multiselect-dropdown
+      [placeholder]="'Seleccione participantes'"
+      [settings]="dropdownSettings"
+      [data]="participantes"
+      [(ngModel)]="selectedItem"
+      name="participantes">
+      </ng-multiselect-dropdown>
+    </div>
+    <div class="col-md-2 offset-1 form-floating">
+      <select [(ngModel)]="oficinaf" class="form-select" id="legajo" aria-label="Floating label select example" (ngModelChange)="onChange3($event)">
+        <option selected>Oficina</option>
+        <option *ngFor="let o of oficinas">
+          {{o.nombre}}
+        </option>
+      </select>
+      <label for="floatingSelect">Seleccione oficina</label>
+    </div>
+    <div class="col-md-6 offset-1 gy-5 my-5">
+      <button type="submit" class="btn btn-celeste px-4 ms-4 col-md" *ngIf="filtro1" (click)="filtroLegajo()">Buscar Legajo</button>
+      <button type="submit" class="btn btn-celeste px-4 ms-4 col-md" (click)="filtroParticipantes()">Buscar Participantes</button>
+      <button type="submit" class="btn btn-celeste px-4 ms-4 col-md" *ngIf="filtro3" (click)="filtroOficina()">Buscar</button>
+      <button type="submit" class="btn btn-celeste px-4 ms-4 col-md" *ngIf="filtro4" (click)="filtroFecha()">Buscar</button>
+    </div>
+</div>
+
+  
+
+<div class="row">
+    <div class="col-md-10 offset-1">
+        <table class="table table-striped-columns">
+            <thead>
+                <tr>
+                  <th>Hora Inicio</th>
+                  <th>Hora Finalizacion</th>
+                  <th>Oficina</th>
+                  
+                  <th>Recursos Fisicos</th>
+                  <th>Recursos Digitales</th>
+                  <th>Participantes</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let a of reunionesFiltradas">
+                  <td>{{a.horaInicio | date:'short'}}</td>
+                  <td>{{a.horaFinal | date:'short'}}</td>
+                  <td>{{a.oficina.nombre}}</td>
+                  <td>
+                    <p *ngFor="let r of a.recursos">
+                      {{r.nombre}} 
+                    </p>
+                  </td>
+                  <td>
+                    <p *ngFor="let rd of a.recursosDigitales">
+                      {{rd.nombre}}
+                    </p>
+                  </td>
+                  <td>
+                    <p *ngFor="let p of a.participantes">
+                      {{p.nombre}} {{p.apellido}}
+                    </p>
+                  </td>
+                  
+                </tr>
+              </tbody>
+        </table>
+    </div>
+</div>
+

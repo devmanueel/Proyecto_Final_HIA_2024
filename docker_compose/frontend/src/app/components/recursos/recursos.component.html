@@ -1,0 +1,174 @@
+<div class="container-fluid">
+    <div class="row mx-5 justify-content-center">
+        <div class="col-12 col-lg-10 p-5">
+            <div class="row align-items-center rounded bg-celeste">
+                <div class="col-md-4 text-center text-white pt-2">
+                    <h2 class="titulo">Agregar Recurso</h2>
+                    <i class="bi bi-file-earmark-plus d-none d-md-block"></i>
+                </div>
+                <div class="col-md-8 p-5 bg-white">
+                    <div class="col-12 text-center mt-5">
+                        <button class="btn btn-celeste px-5 ms-4 my-3" (click)="recursoFisico()"
+                        [ngClass]="{'bg-secondary': fisico }">Físico</button>
+
+                        <button class="btn btn-celeste px-5 ms-4" (click)="recursoDigital()"
+                        [ngClass]="{'bg-secondary': digital }">Digital</button>
+                    </div>
+                    <form *ngIf="fisico" #recursoFisicoForm="ngForm" class="row g-3" action="" method="POST">
+                        
+                        <div class="col-12">
+                            <label class="form-label" for="fisico">Nombre</label>
+                            <input [(ngModel)]="recFisico.nombre" class="form-control" name="nombre" type="text" id="fisico" 
+                            placeholder="Ingrese nombre del recurso" required #fisico="ngModel" 
+                            [ngClass]="{'border-danger': fisico.invalid && (fisico.dirty || fisico.touched)}">
+
+                            <div *ngIf="fisico.invalid && (fisico.dirty || fisico.touched) && fisico.errors?.['required']" class="form-text text-danger">
+                                <i class="bi bi-exclamation-circle"></i> El nombre del recurso es requerido.
+                            </div>
+                        </div>
+
+                        <div class="col-12 text-center mt-5">
+
+                            <button type="submit" class="btn btn-celeste px-5 ms-4" *ngIf="new && !modificar" 
+                            [disabled]="!recursoFisicoForm.valid" (click)="agregarRecursoFisico(content)">Agregar</button>
+
+                            <button type="submit" class="btn btn-celeste px-5 ms-4" *ngIf="modificar" 
+                            [disabled]="!recursoFisicoForm.valid" (click)="modificarRecurso(content)">Modificar</button>
+
+                            <button type="submit" class="btn btn-rojo px-5 ms-4"
+                            (click)="cancelar(recursoFisicoForm)">Cancelar</button>
+
+                        </div>
+                        
+                    </form>
+
+                    <form *ngIf="digital" #recursoDigitalForm="ngForm" class="row g-3" action="" method="POST">
+
+                        <div class="col-12">
+                            <label class="form-label" for="nombre">Nombre</label>
+                            <input [(ngModel)]="recDigital.nombre" class="form-control" type="text" name="nombre" id="nombre" 
+                            placeholder="Ingrese nombre del recurso" required #nombre="ngModel"
+                            [ngClass]="{'border-danger': nombre.invalid && (nombre.dirty || nombre.touched)}">
+
+                            <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched) && nombre.errors?.['required']" class="form-text text-danger">
+                                <i class="bi bi-exclamation-circle"></i> El nombre del recurso es requerido.
+                            </div>
+                        </div>
+
+                        <div class="col-12 my-5">
+                            <label class="form-label" for="recurso">Recurso</label>
+                            <input class="form-control" type="file" alife-file-to-base64 
+                            [(fileModel)]="files" [(rawFileModel)]="rawFiles" ngModel name="recurso" requireFile #recurso="ngModel"
+                            [ngClass]="{'border-danger': recurso.invalid && (recurso.dirty || recurso.touched)}">
+
+                            <div *ngIf="recurso.invalid && (recurso.dirty || recurso.touched) && recurso.errors?.['requireFile']" class="form-text text-danger">
+                                <i class="bi bi-exclamation-circle"></i> El recurso es requerido.
+                            </div>                            
+                        </div>
+                        
+                        <div class="col-12 text-center mt-5">
+
+                            <button type="submit" class="btn btn-celeste px-5 ms-4 mb-2" *ngIf="new && !modificar" 
+                            [disabled]="!recursoDigitalForm.valid" (click)="agregarRecursoDigital(content)">Agregar</button>
+
+                            <button type="submit" class="btn btn-celeste px-5 ms-4" *ngIf="modificar" 
+                            [disabled]="!recursoDigitalForm.valid" (click)="modificarRecurso(content)">Modificar</button>
+
+                            <button type="submit" class="btn btn-rojo px-5 ms-4"
+                            (click)="cancelar(recursoDigitalForm)">Cancelar</button>
+
+                        </div>
+                        
+                    </form>
+
+                    <img src="{{imagen}}" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid p-5">
+    <div class="row g-5">
+        <div class="col-lg-6">
+            <h5 class="bg-rosa mb-0 px-5 py-3 rounded-top">Resgistro de Recursos Físicos</h5>
+            <div class="px-5 py-4 bg-white rounded-bottom">
+                <table datatable class="table table-bordered align-middle" id="tabla1" [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+                    <thead>
+                        <tr class="align-middle">
+                            <th>Nombre</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let rf of recursosFisicos">
+                            <td>{{rf.nombre}}</td>
+                            <td>
+                                <button class="btn btn-celeste d-block m-auto my-1" (click)="cargarRecursoFisico(rf._id)">
+                                    <i class="bi bi-pen-fill"></i>
+                                </button>
+                                <button class="btn btn-secondary d-block m-auto my-1" (click)="eliminarRecursoFisico(rf._id, content)">
+                                    <i class="bi bi-trash3-fill"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    
+        <div class="col-lg-6">
+            <h5 class="bg-rosa mb-0 px-5 py-3 rounded-top">Resgistro de Recursos Digitales</h5>
+            <div class="px-5 py-4 bg-white rounded-bottom">
+                <table datatable class="table table-bordered align-middle" id="tabla2" [dtOptions]="dtOptions" [dtTrigger]="dtTrigger2">
+                    <thead>
+                        <tr class="align-middle">
+                            <th>Nombre</th>
+                            <th>Recurso</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let rd of recursosDigitales">
+                            <td>{{rd.nombre}}</td>
+                            <td>
+                                <button class="btn btn-rojo" (click)="descargarArchivo(rd)">
+                                    <i class="bi bi-download"></i>
+                                </button>
+                            </td>
+                            <td>
+                                <button class="btn btn-celeste d-block m-auto my-1" (click)="cargarRecursoDigital(rd._id)">
+                                    <i class="bi bi-pen-fill"></i>
+                                </button>
+                                <button class="btn btn-secondary d-block m-auto my-1" (click)="eliminarRecursoDigital(rd._id)">
+                                    <i class="bi bi-trash3-fill"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+</div>
+    
+    
+
+
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Aviso</h4>
+    </div>
+    <div class="modal-body text-center text-uppercase">
+        <p class="mt-4">{{ respuesta.message }}</p>
+        <p *ngIf="respuesta.status==201 || respuesta.status==200" class="mt-4"><i class="bi bi-check-circle text-success"></i></p>
+        <p *ngIf="respuesta.status!=201 && respuesta.status!==200" class="mt-4"><i class="bi bi-exclamation-circle text-danger"></i></p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-celeste" (click)="modal.close()">Close</button>
+    </div>
+</ng-template>

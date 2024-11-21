@@ -1,0 +1,125 @@
+<nav class="navbar navbar-expand-lg navbar-light fondo" *ngIf="loginService.userLoggedIn()" >
+    <div class="container-fluid  ">
+        <img src="../../../assets/icons/calendario.png" alt="" class="">
+
+        <a class="navbar-brand text-white mx-3" href="#">MeetingCalendar</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+
+
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item dropdown" *ngIf="loginService.userRole()=='ADMINISTRADOR'">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Administración
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <li><a class="dropdown-item" [routerLink]="['dependencias']">Dependencias</a></li>
+                        <li><a class="dropdown-item" [routerLink]="['empleado-form/0']">Nuevo Empleado</a></li>
+                        <li><a class="dropdown-item" [routerLink]="['empleados']">Lista de Empleados</a></li>
+                        <li><a class="dropdown-item" [routerLink]="['recursos']">Recursos</a></li>
+                        <li><a class="dropdown-item" [routerLink]="['tipo-reunion']">Tipos de reuniones</a></li>
+                        <li><a class="dropdown-item" [routerLink]="['oficinas']">Oficinas</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item" *ngIf="loginService.userRole()=='ADMINISTRADOR'">
+                    <a class="nav-link active" aria-current="page" [routerLink]="['calendario']">Calendario</a>
+                </li>
+
+                <li class="nav-item dropdown" *ngIf="loginService.userRole()=='ADMINISTRADOR'">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Reuniones
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <li><a class="dropdown-item" [routerLink]="['reunion-form/0']">Nueva Reunión</a></li>
+                        <li><a class="dropdown-item" [routerLink]="['reuniones']">Ver Reuniones</a></li>
+                    </ul>
+                </li>
+
+
+                <li class="nav-item" *ngIf="loginService.userRole()=='PARTICIPANTE'">
+                    <a class="nav-link active" aria-current="page" [routerLink]="['calendario']">Agenda</a>
+                </li>
+                <li class="nav-item" *ngIf="loginService.userRole()=='PARTICIPANTE'">
+                    <a class="nav-link mx-3" [routerLink]="['audiencias']">Audiencia</a>
+                </li>
+                <li class="nav-item" *ngIf="loginService.userRole()=='PARTICIPANTE'">
+                    <a class="nav-link mx-3" [routerLink]="['buscar-audiencia']">Consultar Audiencias</a>
+                </li>
+
+
+                <li class="nav-item dropdown" *ngIf="loginService.userRole()=='ADMINISTRADOR'">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Reportes
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <li><a class="dropdown-item" [routerLink]="['busqueda-avanzada']">Búsquedas avanzadas</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown" *ngIf="loginService.userRole()=='ADMINISTRADOR'">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Estadisticas
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <li><a class="dropdown-item" [routerLink]="['estadisticas']">Oficina</a></li>
+                        <li><a class="dropdown-item" [routerLink]="['estadisticaP']">Participante</a></li>
+                        
+                    </ul>
+                </li>
+                
+            </ul>
+            <!--    SECCION DE NOTIFICACIONES-->
+            <span class="navbar-text  ms-auto notificacion">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell notificacioni" viewBox="0 0 16 16">
+                            <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"/>
+                        </svg>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDropdownMenuLink">
+                        <div class="d-flex w-100 justify-content-center">
+                            <h6 class="mb-1 titulo">Notificaciones</h6>
+                        </div>
+                        <div class="list-group ">
+                            <a class="list-group-item list-group-item-action active border border-dark noti" aria-current="true" *ngFor="let r of reuniones"
+                            (click)="prueba(r)">
+                                <p class="mb-1 fw-bold">Tipo de reunion: {{r.tipoReunion.tipoReunion}} </p>
+                                <p class="mb-1 fw-bold">Oficina: {{r.oficina.nombre}} </p> 
+                                <small>Fecha: {{r.horaInicio | date:'MMMM d, y'}} </small><br>
+                                <small>Inicia: {{r.horaInicio | date:'HH:mm'}} - Finaliza: {{r.horaFinal | date:'HH:mm'}} </small>
+                            </a>
+                        </div>
+                    </ul>
+                </li>
+            </span>
+            <!--    FIN SECCION DE NOTIFICACIONES-->
+            <span class="navbar-text  ms-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="http://localhost:4200/reuniones" id="navbarDropdownMenuLink" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-person-fill" viewBox="0 0 16 16">
+                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                        </svg>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDropdownMenuLink" >
+                        <li><a class="dropdown-item" *ngIf="!loginService.userLoggedIn()" [routerLink]="['login']">Login</a></li>
+                        <li><p class="dropdown-item text-white" *ngIf="loginService.userLoggedIn()">{{loginService.userLogged()}}</p></li>
+                        <li><a class="dropdown-item" [routerLink]="['login']" *ngIf="loginService.userLoggedIn()" (click)="logout()">Logout</a></li>
+                        
+                    </ul>
+                </li>
+            </span>
+        </div>
+    </div>
+</nav>
+
+

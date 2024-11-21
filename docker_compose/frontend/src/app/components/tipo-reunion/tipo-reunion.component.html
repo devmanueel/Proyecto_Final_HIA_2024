@@ -1,0 +1,83 @@
+<div class="container-fluid">
+    <div class="row mx-5 justify-content-center">
+        <div class="col-12 col-lg-10 p-5">
+            <div class="row align-items-center rounded bg-celeste">
+                <div class="col-md-4 text-center text-white pt-2">
+                    <h2>Agregar Tipo de Reunión</h2>
+                </div>
+
+                <div class="col-md-8 p-5 bg-white">
+                    <form #tipoReunionForm="ngForm"  class="row g-3" action="" method="POST">
+
+                        <div *ngIf="tipo">
+                            <div class="col-12">
+                                <label class="form-label" for="nombre">Tipo Reunión</label>
+                                <input [(ngModel)]="tipo.tipoReunion" class="form-control" type="text" name="nombre" id="nombre" 
+                                placeholder="Ingrese tipo de reunión" required #nombre="ngModel"
+                                [ngClass]="{'border-danger': nombre.invalid && (nombre.dirty || nombre.touched)}">
+
+                                <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched) && nombre.errors?.['required']" class="form-text text-danger">
+                                    <i class="bi bi-exclamation-circle"></i> El tipo de reunion es requerido.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 text-center mt-5">
+
+                            <button type="submit" class="btn btn-celeste px-5 ms-4" [disabled]="!tipoReunionForm.valid" *ngIf="!modificar" (click)="agregarTipoReunion(content)">Agregar</button>
+                            <button type="submit" class="btn btn-celeste px-5 ms-4" [disabled]="!tipoReunionForm.valid" *ngIf="modificar" (click)="modificarTipoReunion(content, tipoReunionForm)">Modificar</button>
+                            <button type="submit" class="btn btn-celeste px-5 ms-4" *ngIf="modificar" (click)="cancelarTipoReunion(tipoReunionForm)">Cancelar</button>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid p-5">
+    <h5 class="bg-rosa mb-0 px-5 py-3 rounded-top">Registro Tipo Reunión</h5>
+    <div class="px-5 py-4 bg-white rounded-bottom">
+        <table datatable class="table table-bordered align-middle" [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+            <thead>
+                <tr class="align-middle">
+                    <th>Reunión</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let t of tipos">
+                    <td>{{t.tipoReunion}}</td>
+                    
+                    <td>
+                        <button class="btn btn-celeste d-block m-auto my-1" (click)="cargarTipoReunion(t._id)">
+                            <i class="bi bi-pen-fill"></i>
+                        </button>
+                        <button class="btn btn-secondary d-block m-auto my-1" (click)="eliminarTipoReunion(t._id)">
+                            <i class="bi bi-trash3-fill"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Aviso</h4>
+    </div>
+    <div class="modal-body text-center text-uppercase">
+        <p class="mt-4">{{ respuesta.message }}</p>
+        <p *ngIf="respuesta.status==201 || respuesta.status==200" class="mt-4"><i class="bi bi-check-circle text-success"></i></p>
+        <p *ngIf="respuesta.status!=201 && respuesta.status!==200" class="mt-4"><i class="bi bi-exclamation-circle text-danger"></i></p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-celeste" (click)="modal.close()">Close</button>
+    </div>
+</ng-template> 

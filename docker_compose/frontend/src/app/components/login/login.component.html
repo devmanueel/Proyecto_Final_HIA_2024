@@ -1,0 +1,61 @@
+<div class="container-fluid contenido" *ngIf="!isLogin()">
+    <div class="row justify-content-center pe-5 mb-4">
+        <div class="col-md-1 col-3 d-block offset-md-0 offset-1 imagen">
+            <img src="../../../assets/icons/calendario.png">
+        </div>
+        <div class="col-md-2 col-12 nombre px-4">
+            MeetingCalendar
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-5 col-10 p-5 formulario">
+
+            <form class="row justify-content-around g-5" action="" #loginForm="ngForm" method="post">
+
+                <div class="col-md-11 col-8">
+                    <label for="correo" class="form-label">Correo</label>
+                    <input [(ngModel)]="login.email" ngModel [email]="true" type="email" class="form-control" id="correo" name="correo" placeholder="Ingrese email"
+                    required #email="ngModel" [ngClass]="{'border-danger': email.invalid && (email.dirty || email.touched)}"
+                    >
+                </div>
+                <div *ngIf="email.invalid && (email.dirty || email.touched)" class="col-md-11 col-8 form-text text-danger">
+                    Debe ingresar un correo valido. 
+                </div>
+                
+
+                <div class="col-md-11 col-8">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input [(ngModel)]="login.clave" type="password" class="form-control" id="password" name="password" placeholder="Ingrese contraseña"
+                    required #pass="ngModel" [ngClass]="{'border-danger': pass.invalid && (pass.dirty || pass.touched)}">
+                </div>
+                <div *ngIf="pass.invalid && (pass.dirty || pass.touched) && pass.errors?.['required']" class="col-md-11 col-8 form-text text-danger">
+                    Debe ingresar contraseña. 
+                </div>
+
+                <div class="col-md-12 text-center mt-5">
+                    <button [disabled]="loginForm.invalid" type="submit" class="btn btn-danger boton" (click)="ingresar(content)">Ingresar</button>
+                </div>
+            
+            </form>
+        
+        </div>
+    </div>
+</div>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Aviso</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body text-center text-uppercase">
+        <p class="mt-4">{{ message }}</p>
+        <p *ngIf="respuesta.status==200" class="mt-4"><i class="bi bi-check-circle text-success"></i></p>
+        <p *ngIf="respuesta.status!=200" class="mt-4"><i class="bi bi-exclamation-circle text-danger"></i></p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-celeste" (click)="modal.close()">Close</button>
+    </div>
+</ng-template>
+        
+    
+

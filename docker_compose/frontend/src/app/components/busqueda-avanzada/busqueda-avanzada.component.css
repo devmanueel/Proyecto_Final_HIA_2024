@@ -1,0 +1,20 @@
+.btn-celeste {
+    background-color: #2a9ed2;
+    color: #fff;
+}
+
+.btn-celeste:hover {
+    background-color: rgba(42, 158, 210, 0.8);
+}
+th {
+    background-color: #e55767;
+}
+
+table{
+    background-color: white;
+}
+
+thead{
+    color: #e55767;
+    color:  white;
+}

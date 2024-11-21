@@ -1,0 +1,44 @@
+<div class="container-fluid p-5">
+    <h5 class="bg-rosa mb-0 px-5 py-3 rounded-top">Resgistro de Empleados</h5>
+    <div class="px-5 py-4 bg-white rounded-bottom">
+        <table datatable class="table table-bordered align-middle" [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+            <thead>
+                <tr class="align-middle">
+                    <th>Apellido</th>
+                    <th>Nombre</th>
+                    <th>Legajo</th>
+                    <th>Email</th>
+                    <th>Rol</th>
+                    <th>Dependencias</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let e of empleados">
+                    <td>{{e.apellido}}</td>
+                    <td>{{e.nombre}}</td>
+                    <td>{{e.legajo}}</td>
+                    <td>{{e.email}}</td>
+                    <td>{{e.rol}}</td>
+                    <td >
+                        <p *ngFor="let t of e.dependencias">
+                            {{t.tipo }}
+                        </p>
+                    </td>
+                    <td>
+                        <button class="btn btn-celeste d-block m-auto my-1" (click)="modificar(e._id)">
+                            <i class="bi bi-pen-fill"></i>
+                        </button>
+                        <button class="btn btn-secondary d-block m-auto my-1" (click)="eliminarEmpleados(e._id)">
+                            <i class="bi bi-trash3-fill"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+

@@ -1,0 +1,42 @@
+<div class="mb-5">
+  <h1 class="fw-bold">Cantidad de Participantes por Reuniones </h1>
+</div>
+
+<div class="container mb-3">
+    <div class="row">
+      <div style="display: block">
+        <canvas baseChart
+          [data]="barChartData"
+          [options]="barChartOptions"
+          [plugins]="barChartPlugins"
+          [type]="barChartType"
+          (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)">
+        </canvas>
+      </div>
+    </div>
+</div>
+<hr>
+<div class="mb-5  mt-5">
+  <h1 class="fw-bold">Cantidad de Participantes por Mes </h1>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-3"></div>
+    <div class="col-6">
+      <div class="size">
+        <div class="chart">
+          <canvas baseChart
+                [data]="pieChartData"
+                [type]="pieChartType"
+                [options]="pieChartOptions"
+                [plugins]="pieChartPlugins">
+          </canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-3"></div>
+  </div>
+</div>
+
+

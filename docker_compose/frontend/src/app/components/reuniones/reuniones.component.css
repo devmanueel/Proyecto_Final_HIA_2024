@@ -1,0 +1,53 @@
+.bg-celeste {
+    background-color: #2a9ed2;
+}
+
+.bg-claro {
+    background-color: #ebeff3;
+}
+
+.bg-rojo {
+    background-color: #e55767;
+}
+
+.btn-celeste {
+    background-color: #2a9ed2;
+    color: #fff;
+}
+
+.btn-celeste:hover {
+    background-color: rgba(42, 158, 210, 0.8);
+}
+
+.btn-rojo {
+    background-color: #e55767;
+    color: #fff;
+}
+
+.btn-rojo:hover {
+    background-color: rgba(229, 87, 103, 0.8);
+}
+
+h2.titulo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+label.form-label {
+    font-weight: bold;
+}
+
+.titulo ~ i {
+    font-size: 6rem;
+}
+
+p i {
+    font-size: 3rem;
+    margin-top: 2rem;
+}
+
+thead {
+    background-color: #E55767;
+    color: #fff;
+}

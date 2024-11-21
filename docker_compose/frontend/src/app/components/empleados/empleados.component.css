@@ -1,0 +1,26 @@
+thead {
+    background-color: #E55767;
+    color: #fff;
+}
+
+thead tr th {
+    text-align: center !important;
+}
+
+tbody tr td{
+    text-align: center !important;
+}
+
+.bg-rosa {
+    background-color: #E55767;
+    color: #fff;
+}
+
+.btn-celeste {
+    background-color: #2a9ed2;
+    color: #fff;
+}
+
+.btn-celeste:hover {
+    background-color: rgba(42, 158, 210, 0.8);
+}

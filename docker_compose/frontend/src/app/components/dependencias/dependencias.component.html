@@ -1,0 +1,81 @@
+<div class="container-fluid">
+    <div class="row mx-5 justify-content-center">
+        <div class="col-12">
+            <h5 class="bg-rosa mb-0 px-5 py-3 rounded-top">Resgistro de Dependencias</h5>
+            <div class="px-5 py-4 bg-white rounded-bottom">
+                <button class="btn btn-celeste mb-4" (click)="agregar(formContent)">Agregar Dependencia</button>
+                <table datatable class="table table-striped table-bordered" [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+                    <thead>
+                        <tr class="align-middle">
+                            <th>ID</th>
+                            <th>Dependencia</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let d of dependencias">
+                            <td>{{d._id}}</td>
+                            <td>{{d.tipo}}</td>
+                            <td>
+                                <button class="btn btn-celeste d-block m-auto my-1" (click)="actualizar(d, formContent)">
+                                    <i class="bi bi-pen-fill"></i>
+                                </button>
+                                <button class="btn btn-secondary d-block m-auto my-1" (click)="eliminarDependencia(d._id, content)">
+                                    <i class="bi bi-trash3-fill"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #formContent let-modal>
+    <div class="modal-header">
+      <h4 *ngIf="accion=='new'" class="modal-title" id="modal-basic-title">Nueva Dependencia</h4>
+      <h4 *ngIf="accion=='update'" class="modal-title" id="modal-basic-title">Actualizar Dependencia</h4>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="dependenciaForm" class="row g-3" action="" method="POST">
+            <div class="col-12">
+                <label class="form-label" for="dependencia">Dependencia</label>
+                <input class="form-control" type="text" id="dependencia" placeholder="Ingrese el tipo dependencia"
+                formControlName="tipo" [ngClass]="{'border-danger': tipo && tipo.errors && (tipo?.dirty || tipo?.touched)}">
+
+                <div *ngIf="tipo && tipo.errors && (tipo?.dirty || tipo?.touched)" class="form-text text-danger">
+                    <i class="bi bi-exclamation-circle"></i> Proporcione un nombre para la dependencia.
+                </div>
+            </div>
+
+            <div class="col-12 text-center mt-5">
+                <button *ngIf="accion=='new'" (click)="agregarDependencia(content)" [disabled]="!dependenciaForm.valid"
+                type="submit" class="btn btn-celeste">Agregar</button>
+
+                <button *ngIf="accion=='update'" (click)="actualizarDependencia(content)" [disabled]="!dependenciaForm.valid"
+                type="submit" class="btn btn-celeste">Guardar</button>
+
+                <button type="button" class="btn btn-rosa ms-4" (click)="modal.close()">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Aviso</h4>
+    </div>
+    <div class="modal-body text-center text-uppercase">
+        <p class="mt-4">{{ respuesta.message }}</p>
+        <p *ngIf="respuesta.status==201 || respuesta.status==200" class="mt-4"><i class="bi bi-check-circle text-success"></i></p>
+        <p *ngIf="!(respuesta.status==201 || respuesta.status==200)" class="mt-4"><i class="bi bi-exclamation-circle text-danger"></i></p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-celeste" (click)="modal.close()">Cerrar</button>
+    </div>
+</ng-template>

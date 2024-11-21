@@ -1,0 +1,79 @@
+<div class="container-fluid px-5">
+    <h5 class="bg-rojo mb-0 px-5 py-3 rounded-top mt-5 text-white">Mis Audiencias</h5>
+    <div class="px-5 py-4 bg-white rounded-bottom">
+        <table datatable class="table table-bordered align-middle text-center" [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+            <thead>
+                <tr class="align-middle">
+                    <th>Tipo de reunion</th>
+                    <th>Horario</th>
+                    <th>Prioridad</th>
+                    <th>Oficina</th>
+                    <!-- <th>Estado</th> -->
+                    <th>Participantes</th>
+                    <th>Recursos</th>
+                    <th>Deshabilitada</th>
+                    <th>Confirmada</th>
+                    <th>Ver</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let r of reuniones">
+                    <td>{{ r.tipoReunion.tipoReunion }}</td>
+                    <td>
+                        <p>{{ r.horaInicio | date: 'dd/MM/yyyy' }}</p>
+                        {{ r.horaInicio | date: 'HH:mm' }} - 
+                        {{ r.horaFinal | date: 'HH:mm' }}
+                    </td>
+                    <td>{{ r.prioridad.tipoPrioridad }}</td>
+                    <td>{{ r.oficina.nombre }}</td>
+                    <td class="text-start">
+                        <ul>
+                            <li *ngFor="let p of r.participantes">
+                                {{ p.apellido }}, {{ p.nombre }}
+                            </li>
+                        </ul>
+                    </td>
+                    <td class="text-start">
+                        <ul>
+                            <li *ngFor="let rec of r.recursosDigitales">
+                                {{ rec.nombre }}
+                            </li>
+                            <li *ngFor="let rec of r.recursos">
+                                {{ rec.nombre }}
+                            </li>
+                        </ul>
+                    </td>
+                    <td>{{ r.estaDeshabilitada | yesNo }}</td>
+                    <td>{{ r.reunionConfirmada | yesNo }}</td>
+                    <td>
+                        <button (click)="verReunion(r)" class="btn btn-celeste d-block m-auto my-1">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+
+<!-- 
+<ng-template #content let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="modal-basic-title">Código de verificación</h5>
+    </div>
+    <div class="modal-body text-center text-uppercase">
+        <ngx-qrcode class="text-center" 
+        [elementType]="elementType" 
+        [errorCorrectionLevel]="correctionLevel"
+        [value]="value"
+        alt="qr code reunion">
+        </ngx-qrcode>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-celeste" (click)="modal.close()">Cerrar</button>
+    </div>
+</ng-template> -->
+
