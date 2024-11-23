@@ -41,6 +41,7 @@ services:
 # BACKEND
 #
   backend:
+    image: manuudev/backend:latest
     restart: unless-stopped
     build:
       context: ./backend
@@ -60,6 +61,7 @@ services:
 # frontend
 #
   frontend:
+    image: manuudev/frontend:latest
     restart: unless-stopped
     build:
       context: ./frontend
