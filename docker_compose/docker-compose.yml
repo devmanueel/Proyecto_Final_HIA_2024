@@ -107,6 +107,25 @@ services:
       - database
 
 #
+# Mongodb_backup
+#
+  mongodb_backup:
+    image: mongo:7
+    container_name: mongodb_backup
+    restart: unless-stopped
+    networks:
+      my_network:
+        ipv4_address: 172.20.0.10
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: secret
+    volumes:
+      - ./backups:/backups
+    entrypoint: ["/bin/sh", "-c", "while true; do mongodump --uri=mongodb://root:secret@database:27017 --out /backups/$(date +'%Y-%m-%d_%H-%M-%S'); sleep 86400; done"]
+    depends_on:
+      - database
+
+#
 # PROMETHEUS
 #
   prometheus:
@@ -143,12 +162,64 @@ services:
     depends_on:
       - prometheus
 
+
+#
+# MONGO CLUSTER REPLICANCIA
+#
+  mongo1:
+      image: mongo:7
+      hostname: mongo1
+      container_name: mongo1
+      networks:
+        my_network:
+          ipv4_address: 172.20.0.11
+      ports:
+        - "27018:27017"
+      entrypoint: ["mongod", "--replSet", "myReplicaSet", "--bind_ip", "localhost,mongo1"]
+
+  mongo2:
+      image: mongo:7
+      hostname: mongo2
+      container_name: mongo2
+      networks:
+        my_network:
+          ipv4_address: 172.20.0.12
+      ports:
+        - "27019:27017"
+      entrypoint: ["mongod", "--replSet", "myReplicaSet", "--bind_ip", "localhost,mongo2"]
+
+  mongo3:
+      image: mongo:7
+      hostname: mongo3
+      container_name: mongo3
+      networks:
+        my_network:
+          ipv4_address: 172.20.0.13
+      ports:
+        - "27020:27017"
+      entrypoint: ["mongod", "--replSet", "myReplicaSet", "--bind_ip", "localhost,mongo3"]
+
+  mongosetup:
+    image: mongo:7
+    depends_on:
+      - mongo1
+      - mongo2
+      - mongo3
+    networks:
+      my_network:
+        ipv4_address: 172.20.0.14
+    volumes:
+      - ./scripts:/scripts
+    entrypoint: [ "bash", "/scripts/mongo_setup.sh" ]
+
+
 networks:
   my_network:
     driver: bridge
     ipam:
       config:
         - subnet: 172.20.0.0/16
+
 
 volumes:
   mongo-data:
