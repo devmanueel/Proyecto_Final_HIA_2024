@@ -17,6 +17,60 @@ services:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
+
+#
+# MONGO CLUSTER REPLICANCIA
+#
+  mongo1:
+    image: mongo:7
+    hostname: mongo1
+    container_name: mongo1
+    networks:
+      my_network:
+        ipv4_address: 172.20.0.11
+    ports:
+      - "27018:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: secret
+    entrypoint: ["mongod", "--replSet", "myReplicaSet", "--bind_ip", "localhost,mongo1"]
+
+  mongo2:
+    image: mongo:7
+    hostname: mongo2
+    container_name: mongo2
+    networks:
+      my_network:
+        ipv4_address: 172.20.0.12
+    ports:
+      - "27019:27017"
+    entrypoint: ["mongod", "--replSet", "myReplicaSet", "--bind_ip", "localhost,mongo2"]
+
+  mongo3:
+    image: mongo:7
+    hostname: mongo3
+    container_name: mongo3
+    networks:
+      my_network:
+        ipv4_address: 172.20.0.13
+    ports:
+      - "27020:27017"
+    entrypoint: ["mongod", "--replSet", "myReplicaSet", "--bind_ip", "localhost,mongo3"]
+
+  mongosetup:
+    image: mongo:7
+    depends_on:
+      - mongo1
+      - mongo2
+      - mongo3
+    networks:
+      my_network:
+        ipv4_address: 172.20.0.14
+    volumes:
+      - ./scripts:/scripts
+    entrypoint: [ "bash", "/scripts/mongo_setup.sh" ]
+
+  
 #
 # MONGO EXPRESS
 # Default user:password ==> admin:pass
@@ -30,7 +84,7 @@ services:
     ports:
       - "8081:8081"
     environment:
-      ME_CONFIG_MONGODB_URL: mongodb://root:secret@database:27017
+      ME_CONFIG_MONGODB_URL: mongodb://mongo1:27017,mongo2:27017,mongo3:27017/test?replicaSet=myReplicaSet
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: secret
     depends_on:
@@ -51,7 +105,7 @@ services:
         ipv4_address: 172.20.0.4
     environment:
       PORT: 3000
-      MONGO_URI: mongodb://root:secret@database:27017
+      MONGO_URI: mongodb://mongo1:27017,mongo2:27017,mongo3:27017/test?replicaSet=myReplicaSet
       SECRET_JWT_SEED: secret
     ports:
       - "8000:3000"
@@ -86,8 +140,8 @@ services:
     volumes: 
       - ./dump:/dump 
     depends_on: 
-      - database 
-    entrypoint: ["/bin/sh", "-c", "mongorestore --uri mongodb://root:secret@database:27017 --dir /dump"]
+      - mongo1
+    entrypoint: ["/bin/sh", "-c", "mongorestore --uri mongodb://mongo1:27017,mongo2:27017,mongo3:27017/test?replicaSet=myReplicaSet --dir /dump"]
 
   #
 # MONGODB_EXPORTER
@@ -101,10 +155,10 @@ services:
     ports:
       - "9216:9216"
     environment:
-      - MONGODB_URI=mongodb://root:secret@database:27017
+      - MONGODB_URI=mongodb://root:secret@mongo1:27017
     command: ["--collect-all"]
     depends_on:
-      - database
+      - mongo1
 
 #
 # Mongodb_backup
@@ -121,7 +175,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: secret
     volumes:
       - ./backups:/backups
-    entrypoint: ["/bin/sh", "-c", "while true; do mongodump --uri=mongodb://root:secret@database:27017 --out /backups/$(date +'%Y-%m-%d_%H-%M-%S'); sleep 86400; done"]
+    entrypoint: ["/bin/sh", "-c", "while true; do mongodump --uri=mongodb+srv://root:secret@database:27017 --out /backups/$(date +'%Y-%m-%d_%H-%M-%S'); sleep 86400; done"]
     depends_on:
       - database
 
@@ -161,57 +215,6 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=admin
     depends_on:
       - prometheus
-
-
-#
-# MONGO CLUSTER REPLICANCIA
-#
-  mongo1:
-      image: mongo:7
-      hostname: mongo1
-      container_name: mongo1
-      networks:
-        my_network:
-          ipv4_address: 172.20.0.11
-      ports:
-        - "27018:27017"
-      entrypoint: ["mongod", "--replSet", "myReplicaSet", "--bind_ip", "localhost,mongo1"]
-
-  mongo2:
-      image: mongo:7
-      hostname: mongo2
-      container_name: mongo2
-      networks:
-        my_network:
-          ipv4_address: 172.20.0.12
-      ports:
-        - "27019:27017"
-      entrypoint: ["mongod", "--replSet", "myReplicaSet", "--bind_ip", "localhost,mongo2"]
-
-  mongo3:
-      image: mongo:7
-      hostname: mongo3
-      container_name: mongo3
-      networks:
-        my_network:
-          ipv4_address: 172.20.0.13
-      ports:
-        - "27020:27017"
-      entrypoint: ["mongod", "--replSet", "myReplicaSet", "--bind_ip", "localhost,mongo3"]
-
-  mongosetup:
-    image: mongo:7
-    depends_on:
-      - mongo1
-      - mongo2
-      - mongo3
-    networks:
-      my_network:
-        ipv4_address: 172.20.0.14
-    volumes:
-      - ./scripts:/scripts
-    entrypoint: [ "bash", "/scripts/mongo_setup.sh" ]
-
 
 networks:
   my_network:
