@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: CI/CD Pipeline HIA2024
 
 on:
   push:
@@ -60,7 +60,7 @@ jobs:
       with:
         to: "1872534254"
         token: "8195454332:AAEGdR8K6Wm8BvdNcCtF3uqh7KvOFbUDSnU"
-        message: 'GitHub Actions workflow failed! 🚨'
+        message: 'GitHub Actions workflow fallo! 🚨'
 
     - name: Notify on success
       if: success()
@@ -68,7 +68,7 @@ jobs:
       with:
         to: "1872534254"
         token: "8195454332:AAEGdR8K6Wm8BvdNcCtF3uqh7KvOFbUDSnU"
-        message: 'GitHub Actions workflow succeeded! 🎉'
+        message: 'GitHub Actions workflow exitoso! 🎉'
 
     - name: Deploy containers
       run: |
