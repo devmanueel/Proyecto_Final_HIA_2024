@@ -2,6 +2,7 @@
 # Espera para garantizar que los contenedores de MongoDB estén listos
 sleep 10
 
+
 # Ejecuta el comando para iniciar el conjunto de réplicas
 mongosh --host mongo1:27017 <<EOF
   var cfg = {
