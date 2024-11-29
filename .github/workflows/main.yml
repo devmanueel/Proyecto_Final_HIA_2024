@@ -44,13 +44,15 @@ jobs:
 
     - name: Build and push frontend Docker image
       run: |
-        docker build --no-cache -t ${{ secrets.DOCKER_USERNAME }}/frontend:latest -f ./docker_compose/frontend/Dockerfile ./docker_compose/frontend 
+        docker build --no-cache -t ${{ secrets.DOCKER_USERNAME }}/frontend:latest -t ${{ secrets.DOCKER_USERNAME }}/frontend:${{ github.sha }} -f ./docker_compose/frontend/Dockerfile ./docker_compose/frontend 
         docker push ${{ secrets.DOCKER_USERNAME }}/frontend:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/frontend:${{ github.sha }}
 
     - name: Build and push backend Docker image
       run: |
-        docker build --no-cache -t ${{ secrets.DOCKER_USERNAME }}/backend:latest -f ./docker_compose/backend/Dockerfile ./docker_compose/backend
+        docker build --no-cache -t ${{ secrets.DOCKER_USERNAME }}/backend:latest -t ${{ secrets.DOCKER_USERNAME }}/backend:${{ github.sha }} -f ./docker_compose/backend/Dockerfile ./docker_compose/backend
         docker push ${{ secrets.DOCKER_USERNAME }}/backend:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/backend:${{ github.sha }}
 
     - name: Deploy containers
       run: |
