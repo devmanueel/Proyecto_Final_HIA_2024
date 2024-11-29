@@ -54,6 +54,22 @@ jobs:
         docker push ${{ secrets.DOCKER_USERNAME }}/backend:latest
         docker push ${{ secrets.DOCKER_USERNAME }}/backend:${{ github.sha }}
 
+    - name: Notify on failure
+      if: failure()
+      uses: appleboy/telegram-action@master
+      with:
+        to: "1872534254"
+        token: "8195454332:AAEGdR8K6Wm8BvdNcCtF3uqh7KvOFbUDSnU"
+        message: 'GitHub Actions workflow failed! 🚨'
+
+    - name: Notify on success
+      if: success()
+      uses: appleboy/telegram-action@master
+      with:
+        to: "1872534254"
+        token: "8195454332:AAEGdR8K6Wm8BvdNcCtF3uqh7KvOFbUDSnU"
+        message: 'GitHub Actions workflow succeeded! 🎉'
+
     - name: Deploy containers
       run: |
         docker compose -f ./docker_compose/docker-compose.yml down 
